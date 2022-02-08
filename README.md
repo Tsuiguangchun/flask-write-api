@@ -3,7 +3,7 @@ learn python flask 框架
 
 -api
 
-userModule.py   登录登出，token和session验证
+userModule.py   登录、登出、获取用户信息，使用token和session验证访问是否有效
 ![image](https://user-images.githubusercontent.com/97667878/152929979-01d190f6-f062-4e8a-867d-0bf9a80b15b2.png)
 ![image](https://user-images.githubusercontent.com/97667878/152930238-bbb00ef0-d1fd-4fc5-ab2a-ddc2e22afb6d.png)
 ![image](https://user-images.githubusercontent.com/97667878/152930322-a81cbd8e-a375-4768-aac2-1eab13affb4e.png)
