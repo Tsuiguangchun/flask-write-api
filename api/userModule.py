@@ -1,5 +1,72 @@
-#encoding:utf-8
-#@CreateTime: 2022/2/7 17:17
-#@Author: Xuguangchun
-#@FlieName: userModule.py
-#@SoftWare: PyCharm
+# encoding:utf-8
+# @CreateTime: 2022/2/7 17:17
+# @Author: Xuguangchun
+# @FlieName: userModule.py
+# @SoftWare: PyCharm
+
+from flask import Flask
+from flask import url_for
+from flask import request, redirect, jsonify, session
+from common.generate_userToken import *
+"""
+session机制 验证
++
+生成用户 token 验证
+"""
+app = Flask(__name__)
+app.secret_key = 'dhsihdishdisbb8dsjdnjn'
+
+
+# app.config['PERMANENT_SESSION_LIFETIME'] = 300
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    global token
+    global username
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+
+    print(request.headers)
+    print(data, type(data))
+
+    if request.method == 'POST':
+        if not all([username, password]):
+            return jsonify(msg='缺少参数，请检查')
+        else:
+            if username == 'xuguangchun' and password == 'xuguangchun123':
+
+                token = generate_token(username)
+                session['username'] = username
+
+                return jsonify(msg='登录成功', token=token)
+                return redirect(url_for('login'))
+            else:
+                return jsonify(msg='登录账号密码错误')
+    else:
+        return jsonify(msg='注意请求方法')
+
+
+@app.route('/logout', methods=['GET'])
+def logout():
+    session.clear()
+    return jsonify(msg='退出登录')
+    return redirect(url_for('login'))
+
+
+@app.route('/userInfo', methods=['GET'])
+def userInfo():
+    # print('这个是请求头参数的token值：====》', request.headers.get('token'))
+    if 'username' in session and session.get('username') == 'xuguangchun':
+        pass
+    else:
+        return jsonify(msg='session已过期，请先登录')
+
+    if certify_token(username, request.headers.get('token')) == True:
+        return jsonify(data={'userId': 12, 'username': '徐光春', 'age': 26}, msg='获取用户%s信息' % session.get('username'))
+    else:
+        return jsonify(msg='token验证失败，请重新登录')
+
+
+app.run(host='0.0.0.0', port=1524)
