@@ -19,6 +19,10 @@ app.secret_key = 'dhsihdishdisbb8dsjdnjn'
 
 # app.config['PERMANENT_SESSION_LIFETIME'] = 300
 
+@app.route('/register', methods=['POST'])
+def register():
+    pass
+
 
 @app.route('/login', methods=['POST'])
 def login():

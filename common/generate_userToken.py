@@ -11,7 +11,8 @@ from flask import jsonify
 
 
 # 生成token 入参：用户id
-def generate_token(key, expire=60):
+# int类型没有encode属性，需转换str
+def generate_token(key, expire=300):
     ts_str = str(time.time() + expire)
     ts_byte = ts_str.encode("utf-8")
     sha1_tshexstr = hmac.new(key.encode("utf-8"), ts_byte, 'sha1').hexdigest()
